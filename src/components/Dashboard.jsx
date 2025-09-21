@@ -94,7 +94,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="p-6 space-y-6 bg-slate-900 min-h-screen">
+    <div className="p-6 space-y-6 bg-slate-900 min-h-screen" data-testid="dashboard">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -180,7 +180,7 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <div className="text-lg font-semibold text-slate-400">{stats.pending}</div>
-                  <div className="text-xs text-slate-400" style={{ fontFamily: '"Noto Sans SC", Nunito, sans-serif' }}>待开始</div>
+                  <div className="text-xs text-slate-300" style={{ fontFamily: '"Noto Sans SC", Nunito, sans-serif' }}>待开始</div>
                 </div>
               </div>
             </CardContent>
@@ -309,7 +309,7 @@ const Dashboard = () => {
                       <h4 className="text-white font-medium" style={{ fontFamily: '"Noto Sans SC", Nunito, sans-serif' }}>
                         {task.title}
                       </h4>
-                      <p className="text-sm text-slate-400" style={{ fontFamily: '"Noto Sans SC", Nunito, sans-serif' }}>
+                      <p className="text-sm text-slate-300" style={{ fontFamily: '"Noto Sans SC", Nunito, sans-serif' }}>
                         {task.description?.substring(0, 50)}...
                       </p>
                     </div>
@@ -322,7 +322,7 @@ const Dashboard = () => {
                       优先级 {Math.round(task.priority || 0)}
                     </Badge>
                     {task.due_date && (
-                      <div className="flex items-center text-sm text-slate-400">
+                      <div className="flex items-center text-sm text-slate-300">
                         <Calendar className="h-4 w-4 mr-1" />
                         {new Date(task.due_date).toLocaleDateString()}
                       </div>
@@ -352,7 +352,7 @@ const StatCard = ({ title, value, icon, color }) => {
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-slate-400 mb-1" style={{ fontFamily: '"Noto Sans SC", Nunito, sans-serif' }}>
+            <p className="text-sm text-slate-300 mb-1" style={{ fontFamily: '"Noto Sans SC", Nunito, sans-serif' }}>
               {title}
             </p>
             <p className="text-2xl font-bold text-white">

@@ -119,7 +119,7 @@ const TaskManager = () => {
   }
 
   return (
-    <div className="p-6 space-y-6 bg-slate-900 min-h-screen">
+    <div className="p-6 space-y-6 bg-slate-900 min-h-screen" data-testid="task-manager">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

@@ -26,8 +26,8 @@ const AppContent = () => {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin text-blue-500 mx-auto mb-4" />
-          <p className="text-slate-400" style={{ fontFamily: '"Noto Sans SC", Nunito, sans-serif' }}>
+          <Loader2 className="h-8 w-8 animate-spin text-blue-500 mx-auto mb-4" role="status" aria-label="Loading" />
+          <p className="text-slate-300" style={{ fontFamily: '"Noto Sans SC", Nunito, sans-serif' }}>
             正在加载...
           </p>
         </div>
@@ -145,7 +145,7 @@ const Sidebar = ({ currentView, setCurrentView, user }) => {
             <p className="text-white text-sm font-medium truncate" style={{ fontFamily: '"Noto Sans SC", Nunito, sans-serif' }}>
               {user?.full_name || user?.username}
             </p>
-            <p className="text-slate-400 text-xs truncate" style={{ fontFamily: '"Noto Sans SC", Nunito, sans-serif' }}>
+            <p className="text-slate-300 text-xs truncate" style={{ fontFamily: '"Noto Sans SC", Nunito, sans-serif' }}>
               {user?.department || '未设置部门'}
             </p>
           </div>

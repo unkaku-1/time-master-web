@@ -29,7 +29,7 @@ const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('overview');
 
   return (
-    <div className="p-6 space-y-6 bg-slate-900 min-h-screen">
+    <div className="p-6 space-y-6 bg-slate-900 min-h-screen" data-testid="admin-panel">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -368,7 +368,7 @@ const UsersTab = () => {
                       <h4 className="text-white font-medium" style={{ fontFamily: '"Noto Sans SC", Nunito, sans-serif' }}>
                         {user.full_name || user.username}
                       </h4>
-                      <p className="text-sm text-slate-400" style={{ fontFamily: '"Noto Sans SC", Nunito, sans-serif' }}>
+                      <p className="text-sm text-slate-300" style={{ fontFamily: '"Noto Sans SC", Nunito, sans-serif' }}>
                         {user.email}
                       </p>
                     </div>
@@ -377,10 +377,10 @@ const UsersTab = () => {
                     <Badge variant={user.is_admin ? 'default' : 'secondary'}>
                       {user.is_admin ? '管理员' : '普通用户'}
                     </Badge>
-                    <div className="text-sm text-slate-400" style={{ fontFamily: '"Noto Sans SC", Nunito, sans-serif' }}>
+                    <div className="text-sm text-slate-300" style={{ fontFamily: '"Noto Sans SC", Nunito, sans-serif' }}>
                       {user.department || '未设置部门'}
                     </div>
-                    <div className="text-sm text-slate-400">
+                    <div className="text-sm text-slate-300">
                       {user.last_login ? (
                         <div className="flex items-center">
                           <UserCheck className="h-4 w-4 mr-1 text-green-400" />

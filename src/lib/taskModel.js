@@ -260,7 +260,17 @@ export class Task {
    * @returns {Task}
    */
   clone() {
-    return Task.fromJSON(this.toJSON());
+    const data = this.toJSON();
+    // 移除ID以便生成新的ID
+    delete data.id;
+    // 递归处理子任务
+    if (data.subTasks && Array.isArray(data.subTasks)) {
+      data.subTasks = data.subTasks.map(subTask => {
+        delete subTask.id;
+        return subTask;
+      });
+    }
+    return Task.fromJSON(data);
   }
 }
 

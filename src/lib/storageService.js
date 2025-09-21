@@ -23,7 +23,9 @@ export class StorageService {
       const parsedData = JSON.parse(tasksData);
       return parsedData.map(taskData => Task.fromJSON(taskData));
     } catch (error) {
-      console.error('Failed to load tasks from storage:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Failed to load tasks from storage:', error);
+      }
       return [];
     }
   }
@@ -233,7 +235,9 @@ export class StorageService {
       const settingsData = localStorage.getItem(this.STORAGE_KEYS.SETTINGS);
       return settingsData ? JSON.parse(settingsData) : this.getDefaultSettings();
     } catch (error) {
-      console.error('Failed to load settings:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Failed to load settings:', error);
+      }
       return this.getDefaultSettings();
     }
   }

@@ -91,6 +91,7 @@ function New-Backup {
         return $false
     }
 }
+}
 
 function Deploy-StaticFiles {
     Write-Info "部署静态文件..."

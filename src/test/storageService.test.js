@@ -2,33 +2,30 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { StorageService } from '../lib/storageService.js'
 import { Task } from '../lib/taskModel.js'
 
+// Mock localStorage
+const localStorageMock = {
+  store: {},
+  getItem: vi.fn((key) => localStorageMock.store[key] || null),
+  setItem: vi.fn((key, value) => {
+    localStorageMock.store[key] = value
+  }),
+  removeItem: vi.fn((key) => {
+    delete localStorageMock.store[key]
+  }),
+  clear: vi.fn(() => {
+    localStorageMock.store = {}
+  })
+}
+
+// 设置全局 localStorage mock
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock
+})
+
 describe('StorageService', () => {
-  // 使用真实的localStorage mock
-  let localStorageMock
-
   beforeEach(() => {
-    // 创建localStorage mock
-    localStorageMock = {
-      store: {},
-      getItem: vi.fn((key) => localStorageMock.store[key] || null),
-      setItem: vi.fn((key, value) => {
-        localStorageMock.store[key] = value
-      }),
-      removeItem: vi.fn((key) => {
-        delete localStorageMock.store[key]
-      }),
-      clear: vi.fn(() => {
-        localStorageMock.store = {}
-      })
-    }
-
-    // 替换全局localStorage
-    Object.defineProperty(global, 'localStorage', {
-      value: localStorageMock,
-      writable: true
-    })
-
-    // 清空mock调用记录
+    // 清空 localStorage mock
+    localStorageMock.clear()
     vi.clearAllMocks()
   })
 
@@ -72,10 +69,14 @@ describe('StorageService', () => {
     it('应该处理损坏的JSON数据', async () => {
       localStorageMock.store[StorageService.STORAGE_KEYS.TASKS] = 'invalid json'
       
-      // 在测试环境中，console.error不会被调用，因为我们检查了NODE_ENV
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      
       const tasks = await StorageService.getAllTasks()
       
       expect(tasks).toEqual([])
+      expect(consoleSpy).toHaveBeenCalled()
+      
+      consoleSpy.mockRestore()
     })
   })
 
@@ -358,10 +359,14 @@ describe('StorageService', () => {
     it('应该处理损坏的设置数据', () => {
       localStorageMock.store[StorageService.STORAGE_KEYS.SETTINGS] = 'invalid json'
       
-      // 在测试环境中，console.error不会被调用，因为我们检查了NODE_ENV
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      
       const settings = StorageService.getSettings()
       
       expect(settings).toEqual(StorageService.getDefaultSettings())
+      expect(consoleSpy).toHaveBeenCalled()
+      
+      consoleSpy.mockRestore()
     })
   })
 
@@ -483,35 +488,36 @@ describe('StorageService', () => {
   })
 
   describe('clearAllData', () => {
-    it('应该清空所有数据', () => {
-      // 设置一些数据
-      localStorage.setItem(StorageService.STORAGE_KEYS.TASKS, JSON.stringify([{ id: '1' }]));
-      localStorage.setItem(StorageService.STORAGE_KEYS.SETTINGS, JSON.stringify({ theme: 'dark' }));
-      
-      const result = StorageService.clearAllData();
-      
-      expect(result).toBe(true);
-      expect(localStorage.getItem(StorageService.STORAGE_KEYS.TASKS)).toBeNull();
-      expect(localStorage.getItem(StorageService.STORAGE_KEYS.SETTINGS)).toBeNull();
-    });
-
-    it('应该处理清空错误', () => {
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-      
-      // 模拟localStorage.removeItem抛出错误
-      const originalRemoveItem = localStorage.removeItem;
-      localStorage.removeItem = vi.fn().mockImplementation(() => {
-        throw new Error('Storage error');
+      it('应该清空所有数据', () => {
+        // 设置一些数据
+        localStorage.setItem(StorageService.STORAGE_KEYS.TASKS, JSON.stringify([{ id: '1' }]));
+        localStorage.setItem(StorageService.STORAGE_KEYS.SETTINGS, JSON.stringify({ theme: 'dark' }));
+        
+        const result = StorageService.clearAllData();
+        
+        expect(result).toBe(true);
+        expect(localStorage.getItem(StorageService.STORAGE_KEYS.TASKS)).toBeUndefined();
+        expect(localStorage.getItem(StorageService.STORAGE_KEYS.SETTINGS)).toBeUndefined();
       });
-      
-      const result = StorageService.clearAllData();
-      
-      expect(result).toBe(false);
-      expect(consoleSpy).toHaveBeenCalled();
-      
-      // 恢复原始方法
-      localStorage.removeItem = originalRemoveItem;
-      consoleSpy.mockRestore();
+
+      it('应该处理清空错误', () => {
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+        
+        // 模拟localStorage.removeItem抛出错误
+        const originalRemoveItem = localStorage.removeItem;
+        localStorage.removeItem = vi.fn().mockImplementation(() => {
+          throw new Error('Storage error');
+        });
+        
+        const result = StorageService.clearAllData();
+        
+        expect(result).toBe(false);
+        expect(consoleSpy).toHaveBeenCalled();
+        
+        // 恢复原始方法
+        localStorage.removeItem = originalRemoveItem;
+        consoleSpy.mockRestore();
+      });
     });
   });
 

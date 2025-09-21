@@ -1,29 +1,9 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import axios from 'axios'
-
-// Mock axios before importing api.js
-vi.mock('axios', () => ({
-  default: {
-    create: vi.fn(() => ({
-      interceptors: {
-        request: {
-          use: vi.fn()
-        },
-        response: {
-          use: vi.fn()
-        }
-      },
-      get: vi.fn(),
-      post: vi.fn(),
-      put: vi.fn(),
-      delete: vi.fn()
-    }))
-  }
-}))
-
-// Now import the API modules
 import { authAPI, tasksAPI, adminAPI, usersAPI } from '../lib/api.js'
 
+// Mock axios
+vi.mock('axios')
 const mockedAxios = vi.mocked(axios)
 
 // Mock localStorage

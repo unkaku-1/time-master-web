@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Development files
+.env.local
+.env.development
+
+# Test files
+tests/
+test-results/
+playwright-report/
+coverage/
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+
+# Build artifacts (except dist for static deployment)
+.vite/
+.cache/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Documentation
+*.md
+docs/
+
+# Git
+.git/
+.gitignore
+
+# Temporary files
+tmp/
+temp/

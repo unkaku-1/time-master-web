@@ -23,7 +23,7 @@ export class StorageService {
       const parsedData = JSON.parse(tasksData);
       return parsedData.map(taskData => Task.fromJSON(taskData));
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
+      if (import.meta.env?.DEV) {
         console.error('Failed to load tasks from storage:', error);
       }
       return [];
@@ -41,7 +41,9 @@ export class StorageService {
       localStorage.setItem(this.STORAGE_KEYS.TASKS, JSON.stringify(tasksData));
       return true;
     } catch (error) {
-      console.error('Failed to save tasks to storage:', error);
+      if (import.meta.env?.DEV) {
+        console.error('Failed to save tasks to storage:', error);
+      }
       return false;
     }
   }
@@ -114,7 +116,9 @@ export class StorageService {
       await this.saveTasks(tasks);
       return task;
     } catch (error) {
-      console.error('Failed to create task:', error);
+      if (import.meta.env?.DEV) {
+        console.error('Failed to create task:', error);
+      }
       throw error;
     }
   }
@@ -151,7 +155,9 @@ export class StorageService {
       await this.saveTasks(tasks);
       return task;
     } catch (error) {
-      console.error('Failed to update task:', error);
+      if (import.meta.env?.DEV) {
+        console.error('Failed to update task:', error);
+      }
       throw error;
     }
   }
@@ -169,7 +175,9 @@ export class StorageService {
       await this.saveTasks(updatedTasks);
       return true;
     } catch (error) {
-      console.error('Failed to delete task:', error);
+      if (import.meta.env?.DEV) {
+        console.error('Failed to delete task:', error);
+      }
       return false;
     }
   }

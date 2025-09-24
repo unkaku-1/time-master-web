@@ -45,6 +45,26 @@ export const AuthProvider = ({ children }) => {
           setUser(response.data);
           setIsAuthenticated(true);
         }
+      } else if (DEV_MODE_ENABLED) {
+        // 开发模式且没有存储的凭据：自动创建管理员用户
+        const mockUser = {
+          id: 1,
+          username: DEV_ADMIN_USERNAME,
+          email: 'admin@company.com',
+          full_name: '系统管理员',
+          is_admin: true,
+          department: 'IT部门',
+          created_at: new Date().toISOString(),
+          last_login: new Date().toISOString()
+        };
+
+        const mockToken = 'auto-dev-token-' + Date.now();
+        
+        localStorage.setItem('auth_token', mockToken);
+        localStorage.setItem('user', JSON.stringify(mockUser));
+        
+        setUser(mockUser);
+        setIsAuthenticated(true);
       }
     } catch (error) {
       // Token 无效或过期，清除本地存储

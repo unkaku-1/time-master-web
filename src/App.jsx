@@ -6,7 +6,7 @@ import Dashboard from './components/Dashboard';
 import AdminPanel from './components/AdminPanel';
 import TaskManager from './components/TaskManager';
 import { Loader2 } from 'lucide-react';
-import './App.css';
+
 
 // Create a client
 const queryClient = new QueryClient({
@@ -167,6 +167,8 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+        {/* 隐藏的主题类哨兵节点 - 确保 Tailwind 在生产构建中保留这些工具类 */}
+        <div className="hidden bg-background text-foreground border-border ring-ring" aria-hidden="true" />
         <AppContent />
       </AuthProvider>
     </QueryClientProvider>
